@@ -135,23 +135,25 @@ class App extends React.Component {
     console.log(this.state.currentRoomID);
     console.log(String(this.state.currentRoomID.roomName));
     return (
-      <div className={"page-layout " + this.state.bg}>
-        <Heading />
-        <Display
-          view={this.state.view}
-          currentRoomID={this.state.currentRoomID}
-          room1={this.state.room1}
-          room2={this.state.room2}
-          room3={this.state.room3}
-          room4={this.state.room4}
-        />
-        <ScrollMenu />
-        <ButtonLayout
-          handleMove={(direction) => this.handleMove(direction)}
-          blayout={this.state.blayout}
-          bgButton={this.state.bgButton}
-        />
-        <Footer />
+      <div className={`centering ${this.state.bg}`}>
+        <div className={"page-layout " + this.state.bg}>
+          <Heading />
+          <Display
+           view={this.state.view}
+            currentRoomID={this.state.currentRoomID}
+            room1={this.state.room1}
+            room2={this.state.room2}
+            room3={this.state.room3}
+            room4={this.state.room4}
+          />
+          <ScrollMenu />
+          <ButtonLayout
+            handleMove={(direction) => this.handleMove(direction)}
+            blayout={this.state.blayout}
+            bgButton={this.state.bgButton}
+          />
+          <Footer />
+        </div>
       </div>
     )
   }
