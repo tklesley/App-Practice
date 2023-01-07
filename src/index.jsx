@@ -13,7 +13,7 @@ const room1 = {
   south: null,
   west: null,
   roomImage: null,
-  description: `You find yourself in a room.  There is a door to your right and a door in front of you.  Neither one are locked.`,
+  description: "",
   firstEntry: true,
   firsfEntryDescription: "",
   visible: true,
@@ -31,7 +31,7 @@ const room2 = {
   south: "room1",
   west: null,
   roomImage: null,
-  description: `You find yourself in a room.  There is a door to your right and a door behind you.  Neither one are locked.`,
+  description: "",
   firstEntry: true,
   firsfEntryDescription: "",
   visible: true,
@@ -49,7 +49,7 @@ const room3 = {
   south: "room4",
   west: "room2",
   roomImage: null,
-  description: `You find yourself in a room.  There is a door to your left and a door behind you.  Neither one are locked.`,
+  description: "",
   firstEntry: true,
   firsfEntryDescription: "",
   visible: true,
@@ -67,7 +67,7 @@ const room4 = {
   south: null,
   west: "room1",
   roomImage: null,
-  description: `You find yourself in a room.  There is a door to your left and a door in front of you.  Neither one are locked.`,
+  description: "",
   firstEntry: true,
   firsfEntryDescription: "",
   visible: true,
@@ -85,95 +85,21 @@ const map1 = {
 }
 
 function handleMove(direction) {
-  let cridMove = this.state.currentRoomID;
-  if (direction === "north") {
-    if (cridMove.north === null) {
-      console.log(`Cannot move ${direction}.`);
-      return;
-    } else {
-      console.log(`Moving ${direction}`);
-      this.setState({ currentRoomID: eval(cridMove.north) }, () => {
-        cridMove = this.state.currentRoomID;
-        console.log(cridMove.roomID);
-        const currentRoomName = cridMove.roomName;
-        const currentRoomDescription = cridMove.description;
-        this.setState({
-        roomName: currentRoomName,
-        roomDescription: currentRoomDescription,
-        });
-      })
-      return;
-    };
-  } else if (direction === "south") {
-    if (cridMove.south === null) {
-      console.log(`Cannot move ${direction}.`);
-      return;
-    } else {
-      console.log(`Moving ${direction}`);
-      this.setState({ currentRoomID: eval(cridMove.south) }, () => {
-        cridMove = this.state.currentRoomID;
-        console.log(cridMove.roomID);
-        const currentRoomName = cridMove.roomName;
-        const currentRoomDescription = cridMove.description;
-        this.setState({
-        roomName: currentRoomName,
-        roomDescription: currentRoomDescription,
-        });
-      })
-      return;
-    };
-  } else if (direction === "east") {
-    if (cridMove.east === null) {
-      console.log(`Cannot move ${direction}.`);
-      return;
-    } else {
-      console.log(`Moving ${direction}`);
-      this.setState({ currentRoomID: eval(cridMove.east) }, () => {
-        cridMove = this.state.currentRoomID;
-        console.log(cridMove.roomID);
-        const currentRoomName = cridMove.roomName;
-        const currentRoomDescription = cridMove.description;
-        this.setState({
-        roomName: currentRoomName,
-        roomDescription: currentRoomDescription,
-        });
-      })
-      return;
-    };
-  } else if (direction === "west") {
-    if (cridMove.west === null) {
-      console.log(`Cannot move ${direction}.`);
-      return;
-    } else {
-      console.log(`Moving ${direction}`);
-      this.setState({ currentRoomID: eval(cridMove.west) }, () => {
-        cridMove = this.state.currentRoomID;
-        console.log(cridMove.roomID);
-        const currentRoomName = cridMove.roomName;
-        const currentRoomDescription = cridMove.description;
-        this.setState({
-        roomName: currentRoomName,
-        roomDescription: currentRoomDescription,
-        });
-      })
-      return;
-    };
+  const cardinal = ["north", "south", "east", "west"]
+  for (card of cardinal) {
+    if (direction === card) {
+      if (this.currentRoomID.north === null) {
+        console.log(`Cannot move ${direction}.`);
+        return;
+      } else {
+        console.log(`Moving ${direction}`);
+        this.setState({ currentRoomID: eval(this.state.currentRoomID.north) })
+        return;
+      };
+    }
   }
 };
 
-/*
-function setRoomState () {
-  console.log("Changing room state");
-  const currentRoom = this.state.currentRoomID;
-  console.log("acquired current room ID")
-  const currentRoomName = currentRoom.roomName;
-  const currentRoomDescription = currentRoom.description;
-  this.setState({
-    roomName: currentRoomName,
-    roomDescription: currentRoomDescription,
-  });
-};
-*/
 
 // --------- App -----------------
 
@@ -185,12 +111,15 @@ class App extends React.Component {
       bgButton: "button-dark",
       settings: false,
       blayout: "move",
-      view: "roomDesc",
+      view: "default",
       currentRoomID: room1,
-      roomName: room1.roomName,
-      roomDescription: room1.description,
+      room1: room1,
+      room2: room2,
+      room3: room3,
+      room4: room4
     };
-    this.handleMoveApp = handleMove.bind(this);
+
+    handleMove = handleMove.bind(this);
     /*   
      if (this.state.bg === "bg-dark") {
        this.setState({ bgButton: "button-dark" })
@@ -201,22 +130,25 @@ class App extends React.Component {
      };
     */
   };
-
+  
   render() {
+    console.log(this.state.currentRoomID);
+    console.log(String(this.state.currentRoomID.roomName));
     return (
       <div className={`centering ${this.state.bg}`}>
         <div className={"page-layout " + this.state.bg}>
           <Heading />
           <Display
-            bg={this.state.bg}
-            view={this.state.view}
-            crid={this.state.currentRoomID}
-            roomName={this.state.roomName}
-            roomDescription={this.state.roomDescription}
+           view={this.state.view}
+            currentRoomID={this.state.currentRoomID}
+            room1={this.state.room1}
+            room2={this.state.room2}
+            room3={this.state.room3}
+            room4={this.state.room4}
           />
           <ScrollMenu />
           <ButtonLayout
-            handleMoveChild={(direction) => this.handleMoveApp(direction)}
+            handleMove={(direction) => this.handleMove(direction)}
             blayout={this.state.blayout}
             bgButton={this.state.bgButton}
           />
@@ -247,8 +179,10 @@ class Display extends App {
   constructor(props) {
     super(props);
     this.state = {
+      
     };
   };
+
   render() {
     if (this.props.view === "map") {
       return (
@@ -259,11 +193,7 @@ class Display extends App {
     } else if (this.props.view === "roomDesc") {
       return (
         <div className="display-container">
-          <AreaDescription
-            bg={this.props.bg}
-            roomName={this.props.roomName}
-            roomDescription={this.props.roomDescription}
-            />
+          <AreaDescription />
         </div>
       );
     }
@@ -314,11 +244,11 @@ class ButtonLayout extends App {
       return (
         <div className="button-container">
           <button className={`main-button ${this.props.bgButton}`} id="button1">Back</button>
-          <button className={`main-button ${this.props.bgButton}`} id="button2" onClick={() => this.props.handleMoveChild("north")}>Up</button>
+          <button className={`main-button ${this.props.bgButton}`} id="button2" onClick={() => this.props.handleMove("north")}>Up</button>
           <button className={`main-button ${this.props.bgButton}`} id="button3">Select</button>
-          <button className={`main-button ${this.props.bgButton}`} id="button4" onClick={() => this.props.handleMoveChild("west")}>Left</button>
-          <button className={`main-button ${this.props.bgButton}`} id="button5" onClick={() => this.props.handleMoveChild("south")}>Down</button>
-          <button className={`main-button ${this.props.bgButton}`} id="button6" onClick={() => this.props.handleMoveChild("east")}>Right</button>
+          <button className={`main-button ${this.props.bgButton}`} id="button4" onClick={() => this.props.handleMove("east")}>Left</button>
+          <button className={`main-button ${this.props.bgButton}`} id="button5" onClick={() => this.props.handleMove("south")}>Down</button>
+          <button className={`main-button ${this.props.bgButton}`} id="button6" onClick={() => this.props.handleMove("west")}>Right</button>
         </div >
       )
     } else {
@@ -357,17 +287,18 @@ class Map extends App {
   constructor(props) {
     super(props);
     this.state = {
-
+      
     };
-    let mapCRID = this.props.currentRoomID;
+
   };
 
   render() {
-
+    console.log(this.props.currentRoomID);
+    console.log(String(this.props.currentRoomID.roomName));
     return (
       <div className='map'>
         <div className="map-title">
-          `${String(mapCRID.roomName)}`
+          `${String(this.props.currentRoomID.roomName)}`
         </div>
         Map
       </div>
@@ -375,20 +306,21 @@ class Map extends App {
   };
 };
 
-class AreaDescription extends Display {
+class AreaDescription extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      currentRoomID: null,
     };
   };
 
   render() {
     return (
       <div className='area'>
-        <div className={`room-title ${this.props.bg}`}>{`${this.props.roomName}`}</div>
+        <div className="room-title">Room Title</div>
         <div className="room-image">Room Image</div>
-        <div className="room-description">{`${this.props.roomDescription}`}</div>
-      </div >
+        <div className="room-description">Room Description</div>
+      </div>
     );
   };
 };
