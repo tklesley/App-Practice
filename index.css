@@ -13,6 +13,11 @@ html,body
   min-width: 330px;
 }
 
+.centering {
+  display: flex;
+  justify-content: center;
+}
+
 .page-layout {
   display: grid;
   height: 100vh;
