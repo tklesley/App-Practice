@@ -98,8 +98,8 @@ function handleMove(direction) {
         const currentRoomName = cridMove.roomName;
         const currentRoomDescription = cridMove.description;
         this.setState({
-        roomName: currentRoomName,
-        roomDescription: currentRoomDescription,
+          roomName: currentRoomName,
+          roomDescription: currentRoomDescription,
         });
       })
       return;
@@ -116,8 +116,8 @@ function handleMove(direction) {
         const currentRoomName = cridMove.roomName;
         const currentRoomDescription = cridMove.description;
         this.setState({
-        roomName: currentRoomName,
-        roomDescription: currentRoomDescription,
+          roomName: currentRoomName,
+          roomDescription: currentRoomDescription,
         });
       })
       return;
@@ -134,8 +134,8 @@ function handleMove(direction) {
         const currentRoomName = cridMove.roomName;
         const currentRoomDescription = cridMove.description;
         this.setState({
-        roomName: currentRoomName,
-        roomDescription: currentRoomDescription,
+          roomName: currentRoomName,
+          roomDescription: currentRoomDescription,
         });
       })
       return;
@@ -152,28 +152,14 @@ function handleMove(direction) {
         const currentRoomName = cridMove.roomName;
         const currentRoomDescription = cridMove.description;
         this.setState({
-        roomName: currentRoomName,
-        roomDescription: currentRoomDescription,
+          roomName: currentRoomName,
+          roomDescription: currentRoomDescription,
         });
       })
       return;
     };
   }
 };
-
-/*
-function setRoomState () {
-  console.log("Changing room state");
-  const currentRoom = this.state.currentRoomID;
-  console.log("acquired current room ID")
-  const currentRoomName = currentRoom.roomName;
-  const currentRoomDescription = currentRoom.description;
-  this.setState({
-    roomName: currentRoomName,
-    roomDescription: currentRoomDescription,
-  });
-};
-*/
 
 // --------- App -----------------
 
@@ -191,6 +177,8 @@ class App extends React.Component {
       roomDescription: room1.description,
     };
     this.handleMoveApp = handleMove.bind(this);
+    this.changeThemeApp = changeTheme.bind(this);
+    this.openSettingsApp = openSettings.bind(this);
     /*   
      if (this.state.bg === "bg-dark") {
        this.setState({ bgButton: "button-dark" })
@@ -203,28 +191,52 @@ class App extends React.Component {
   };
 
   render() {
-    return (
-      <div className={`centering ${this.state.bg}`}>
-        <div className={"page-layout " + this.state.bg}>
-          <Heading />
-          <Display
-            bg={this.state.bg}
-            view={this.state.view}
-            crid={this.state.currentRoomID}
-            roomName={this.state.roomName}
-            roomDescription={this.state.roomDescription}
-          />
-          <ScrollMenu />
-          <ButtonLayout
-            handleMoveChild={(direction) => this.handleMoveApp(direction)}
-            blayout={this.state.blayout}
-            bgButton={this.state.bgButton}
-          />
-          <Footer />
+    if (this.state.settings) {
+      return (
+        <div className={`centering`}>
+          <div className={`settings-layout ${this.state.bg}`}>
+            <Heading
+              openSettingsChild={(set) => this.openSettingsApp(set)}
+              bgButton={this.state.bgButton}
+              settings={this.state.settings}
+            />
+            <Settings
+              changeThemeChild={(theme) => this.changeThemeApp(theme)}
+              bgButton={this.state.bgButton}
+            />
+            <Footer />
+          </div>
         </div>
-      </div>
-    )
+      );
+    } else {
+      return (
+        <div className={`centering`}>
+          <div className={`page-layout ${this.state.bg}`}>
+            <Heading
+              openSettingsChild={(set) => this.openSettingsApp(set)}
+              bgButton={this.state.bgButton}
+              settings={this.state.settings}
+            />
+            <Display
+              bg={this.state.bg}
+              view={this.state.view}
+              crid={this.state.currentRoomID}
+              roomName={this.state.roomName}
+              roomDescription={this.state.roomDescription}
+            />
+            <ScrollMenu />
+            <ButtonLayout
+              handleMoveChild={(direction) => this.handleMoveApp(direction)}
+              blayout={this.state.blayout}
+              bgButton={this.state.bgButton}
+            />
+            <Footer />
+          </div>
+        </div>
+      )
+    }
   }
+  
 };
 
 // --------- Main Page Layout -----------
@@ -237,8 +249,13 @@ class Heading extends App {
   render() {
     return (
       <div className="heading">
-        Heading
-      </div>
+        <div>Heading</div>
+        <button className={`settings-icon ${this.props.bgButton} settings-${this.props.settings}`} onClick={() => this.props.openSettingsChild(this.props.settings)}>Settings
+          <div className="bar1"></div>
+          <div className="bar2"></div>
+          <div className="bar3"></div>
+        </button>
+      </div >
     );
   };
 };
@@ -263,7 +280,7 @@ class Display extends App {
             bg={this.props.bg}
             roomName={this.props.roomName}
             roomDescription={this.props.roomDescription}
-            />
+          />
         </div>
       );
     }
@@ -393,6 +410,30 @@ class AreaDescription extends Display {
   };
 };
 
+// ------------ Settings ----------
+
+class Settings extends App {
+  constructor(props) {
+    super(props);
+    this.state = {
+    };
+  };
+
+  render() {
+    return (
+      <div className="settings-container">
+        <h2>Settings</h2>
+        <h3>Theme</h3>
+        <div>
+          <button className={`${this.props.bgButton} settings-button`} onClick={() => this.props.changeThemeChild("light")}>Light</button>
+          <button className={`${this.props.bgButton} settings-button`} onClick={() => this.props.changeThemeChild("dark")}>Dark</button>
+          <button className={`${this.props.bgButton} settings-button`} onClick={() => this.props.changeThemeChild("classic")}>Classic</button>
+        </div>
+      </div>
+    )
+  };
+};
+
 // ------------ Items -------------
 
 /*
@@ -419,6 +460,36 @@ class Room extends Map {
 }
 */
 
+// --------- Functions ------------
+
+function changeTheme(theme) {
+  if (theme === "light") {
+    this.setState({
+      bg: "bg-light",
+      bgButton: "button-light"
+    });
+  } else if (theme === "dark") {
+    this.setState({
+      bg: "bg-dark",
+      bgButton: "button-dark"
+    });
+  } else {
+    this.setState({
+      bg: "bg-classic",
+      bgButton: "button-classic"
+    });
+  }
+};
+
+function openSettings(onoff) {
+  console.log("opening settings")
+  console.log(onoff)
+  if (onoff) {
+    this.setState({ settings: false })
+  } else {
+    this.setState({ settings: true })
+  }
+};
 
 // ------------ Render ----------------
 

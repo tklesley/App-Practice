@@ -12,12 +12,18 @@ html,body
   padding: 0px;
   min-width: 330px;
 }
+/* Transition Timer */
+
+.bg-light, .button-light, .bg-dark, .button-dark, .bg-classic, .button-classic, .bar1, .bar2, .bar3 {
+  transition: 0.4s;
+}
 
 /* ------ Main Section Settings ------ */
 
 .centering {
   display: flex;
   justify-content: center;
+  background-color: #222222;
 }
 
 .page-layout {
@@ -35,16 +41,41 @@ html,body
   border-right: 1px solid black;
 }
 
-.heading, .display-container, .scrolling-menu-container, .button-container, .footer {
+.settings-layout {
+  height: 100vh;
+  width: 100%;
+  max-width: 600px;
+  display: grid;
+  grid-template-areas: "heading"
+  "settings"
+  "footer";
+  grid-template-rows: 50px 1fr 30px;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+}
+
+.settings-container {
+  grid-area: settings;
+  border-top: 1px solid black;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.heading, .settings-container, .display-container, .scrolling-menu-container, .button-container, .footer {
   padding: 5px;
-  /**/
 }
 
 .heading {
+  font-size: 120%;
   grid-area: heading;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
 }
 
-.display-container {
+.display-container, {
   grid-area: display;
   border-top: 1px solid black;
   overflow: auto;
@@ -112,7 +143,7 @@ html,body
 
 /* ----- Subsection Settings ----- */
 
-.map {}
+/*.map {}*/
 
 .area {
   padding: 5px;
@@ -137,4 +168,37 @@ html,body
   justify-content: center;
 }
 
-.room-description {}
+/*.room-description {} */
+
+/* --------- Settings Icon --------- */
+
+.settings-icon {
+  min-height: 40px;
+  font-size: 0px;
+}
+
+.bar1, .bar2, .bar3 {
+  width: 35px;
+  height: 0px;
+  border: 2px solid;
+  margin: 3px 0;
+}
+
+.settings-true .bar1 {
+  transform: translate(0, 7px) rotate(-45deg);
+}
+
+.settings-true .bar2 {
+  transform: translate(0, 0px) rotate(-405deg)
+}
+
+.settings-true .bar3 {
+  transform: translate(0, -7px) rotate(45deg);
+}
+
+/* ------ Settings Menu ----------- */
+
+.settings-button {
+  padding: 5px;
+  margin: 5px;
+}
